@@ -1,3 +1,19 @@
+<%# Flash Message 太煩，先關掉 %>
+<p class="notice"><%#= notice %></p>
+<p class="alert"><%#= alert %></p>
+
+<% if current_user %>
+  Hi, <%= current_user.email %>
+  <%= link_to('登出', destroy_user_session_path, method: :delete) %> |
+  <%= link_to('修改密碼', edit_user_registration_path) %>
+<% else %>
+  Oops! If you don't have an account, please contact the administrator.
+  <%# 先拿掉以下兩個在user尚未登入時的特定功能連結，因為看起來會很亂 %>
+  <%#= link_to('註冊', new_user_registration_path) %>
+  <%#= link_to('登入', new_user_session_path) %>
+<% end %>
+
+ 
 <!DOCTYPE html>
 <html>
   <head>
