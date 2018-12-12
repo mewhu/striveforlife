@@ -1,6 +1,7 @@
-<%# Flash Message 太煩，先關掉 %>
+<%# notice Flash Message 太煩，先關掉 %>
 <p class="notice"><%#= notice %></p>
-<p class="alert"><%#= alert %></p>
+<%# alert Flash Message 留著，以提示現在用戶的權限等級 %>
+<p class="alert"><%= alert %></p>
 
 <% if current_user %>
   Hi, <%= current_user.email %>
