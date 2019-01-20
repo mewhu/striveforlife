@@ -5,6 +5,15 @@ Rails.application.routes.draw do
   root "endgrades#index"
 
   namespace :admin do
-    root "endgrades#index"
+    resources :endgrades
+
+    root "surveys#index"
+    resources :surveys do
+      member do
+        get :go_endings
+        get :edit_endgrades
+        patch :update_number_of_player
+      end
+    end
   end
 end

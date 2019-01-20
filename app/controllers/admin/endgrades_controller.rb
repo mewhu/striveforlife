@@ -4,7 +4,12 @@ class Admin::EndgradesController < Admin::BaseController
   
   # 將admin的登入認證拆成 user登入+判斷是否admin+合併至admin::basecontroller後，註解掉以下這行
   # before_action :authenticate_user!
+  # before_action :select_number_of_player
 
   def index
+    @endgrades = Endgrade.all
+    # @homeless_endgrades = Endgrade.where(job: "homeless")
+    @endgrade = Endgrade.first
+    @user = User.first
   end
 end

@@ -1,0 +1,67 @@
+<div class="container">
+  <h1>結算後台</h1>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-md-12 hide_element">
+        <%# 以下的select及jquery script是作為人數選單功能的嘗試 %>
+        <%# 目前已可以做到在jquery中取出使用者以下拉式表單挑選出的數字了 %>
+        <select id="numberOfPlayers" class="form-control">
+          <option value="" disabled selected>請選擇遊戲人數</option>
+          <option value="players_8">8人</option>
+          <option value="players_9">9人</option>
+          <option value="players_10">10人</option>
+          <option value="players_11">11人</option>
+          <%# <option value="players_11" selected="selected">11人</option> %>
+        </select>
+        <script>
+          $(document).ready(function(){
+            // 網路上找到以下的簡單jquery點擊事件 : 用以切換元件的display及hide
+            // $("#bb").click(function(){
+              // $("#pp").toggle();
+            // });
+
+            // 用jquery及onChange Event抓出人數模式
+            $("#numberOfPlayers").on('change', function() {
+              // 選人數時先把四種模式的表單都隱藏掉
+              $(".hide_element").css("display", "none");
+              var mode = this.value;
+              console.log(mode);
+
+              switch (mode) { 
+                case 'players_8': 
+                  $("#players_8").show();
+                  break;
+                case 'players_9': 
+                  $("#players_9").show();
+                  break;
+                case 'players_10': 
+                  $("#players_10").show();
+                  break;		
+                case 'players_11': 
+                  $("#players_11").show();
+                  break;
+                default:
+                  alert('Mode Error!');
+              }
+            });
+          });
+        </script>
+      </div>
+
+      <br>
+      <br>
+
+      <%= form_for [:admin, @survey], :url => update_number_of_player_admin_survey_path(@survey.id)  do |f| %>
+      <%#= form_for [:admin, @survey] do |f| %>
+        人數選擇： 
+        <%= f.select :number_of_players, options_for_select([['8人', 8], ['9人', 9], ['10人', 10], ['11人', 11]], f.object.number_of_players), {}, {class: "form-control"} %>
+        <%= f.submit "GoGoGo" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%#= link_to "看結局", :action => "go_endings", :method => :get %>
+
+<%# 以下是文勤的結算計算excel嵌入版 %>
+<%# <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSXnaBGM0unB_-ENjsF1stB9sJFPFbxNgpWg_OfHafHsBt-j2S_GyoW2tYDQUIfwwnr_-ULsG_uu2pc/pubhtml?gid=295467079&amp;single=true&amp;widget=true&amp;headers=false"></iframe> %>

@@ -1,1 +1,85 @@
-<h1>結算後台</h1>
+<div class="container">
+  <h1>結算後台</h1>
+  <div class="row">
+    <div class="col-md-12">
+
+      <%# 以下的select及jquery script是作為人數選單功能的嘗試 %>
+      <%# 目前已可以做到在jquery中取出使用者以下拉式表單挑選出的數字了 %>
+      <select id="numberOfPlayers">
+        <option value="8">8人</option>
+        <option value="9">9人</option>
+        <option value="10">10人</option>
+        <option value="11" selected="selected">11人</option>
+      </select>
+      <script>
+        $(document).ready(function(){
+          // 網路上找到的jquery簡單的點擊事件切換display及hide範例
+          // $("#bb").click(function(){
+          //   $("#pp").toggle();
+          // });
+
+          // 用jquery及onChange Event抓出人數模式
+          $("#numberOfPlayers").on('change', function() {
+            var mode = this.value;
+            console.log(mode);
+          });
+        });
+      </script>
+
+
+
+      <%# 輸入表單的嘗試 : endgrade%>
+      <div class="form-inline" >
+        <%= form_for [:admin, @endgrade] do |f| %>
+          <div class="form-group">
+            <%= f.text_field :name, placeholder: "Endgrade Name",  class: "form-control", :value => @endgrade.id %>
+          </div>
+          <%= f.submit class: "btn btn-primary" %>
+        <% end %>
+      </div>
+
+      <%# 輸入表單的嘗試 : @user %>
+      <%# oh yeah, 的確可以要到Devise產生的user model data !!%>
+      <div class="form-inline" >
+        <%= form_for :user do |f| %>
+          <div class="form-group">
+            <%= f.text_field :name, placeholder: "User Name",  class: "form-control", :value => @user.id %>
+          </div>
+          <%= f.submit "hi", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>角色名稱</th>
+            <th>薪資</th>
+            <th>愛心房東</th>
+            <th>首要任務</th>
+            <th>次要任務</th>
+            <%# <th>CRUD Actions</th> %>
+            <th>結局</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @endgrades.each do |endgrade| %>
+          <tr>
+            <td><%= endgrade.name %></td>
+            <td><%= endgrade.money %></td>
+            <td><%= endgrade.is_kindhearted_landlord %></td>
+            <td><%= endgrade.is_mission_1 %></td>
+            <td><%= endgrade.is_mission_2 %></td>
+            <%# <td> %>
+              <%#= link_to 'Show', admin_endgrade_path(endgrade) %>
+              <%#= link_to 'Edit', edit_admin_endgrade_path(endgrade) %>
+              <%#= link_to 'Delete', admin_endgrade_path(endgrade), method: :delete, data: { confirm: "Are you sure?"} %>
+            <%# </td> %>
+            <td>ending : #?</td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%#= link_to 'New endgrade', new_admin_endgrade_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+</div>

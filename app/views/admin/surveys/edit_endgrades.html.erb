@@ -1,0 +1,38 @@
+<div>
+  <%# 輸入表單的嘗試 : survey%>
+  <div class="form-horizontal" id="survey_form" >
+    <%= form_for [:admin, @survey] do |f| %>
+      <div class="form-group">
+        <%# <div class="hide_element" id="players_11"> %>
+        <div class="" id="endgrades_table">
+          <%= f.fields_for :endgrades do |g| %>
+
+            <% if g.object.players_mode.include?(f.object.number_of_players) %>
+              <%= g.label :name, g.object.name, class: "col-md-2" %>
+              <div class="col-md-10">
+                <div class="col-md-3">
+                  <%= g.text_field :asset, placeholder: "薪水", class: "form-control", :value => (g.object.asset || 0) %>
+                </div>
+                <div class="col-md-3">
+                  <%= g.select :is_kindhearted_landlord, options_for_select([["有愛心房東", true], ["無愛心房東", false]], g.object.is_kindhearted_landlord), {}, {class: "form-control"} %>
+                </div>
+                <% if g.object.m1_on_off == "on" %>
+                  <div class="col-md-3">
+                    <%= g.select :m1_is_done, options_for_select([["有達成 " + g.object.m1_intro, true], ["無達成", false]], g.object.m1_intro), {}, {class: "form-control"} %>
+                  </div>     
+                <% end %>
+                <% if g.object.m2_on_off == "on" %>
+                  <div class="col-md-3">
+                    <%= g.select :m2_is_done, options_for_select([["有達成 " + g.object.m2_intro, true], ["無達成", false]], g.object.m2_intro), {}, {class: "form-control"} %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <br>
+      <%= f.submit "計算結局", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
