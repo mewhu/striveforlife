@@ -10,9 +10,11 @@ Rails.application.routes.draw do
     root "surveys#index"
     resources :surveys do
       member do
-        get :go_endings
-        get :edit_endgrades
         patch :update_number_of_player
+        get :edit_endgrades
+        patch :update_endgrades
+        patch :update_endings
+        get :go_endings
       end
     end
   end

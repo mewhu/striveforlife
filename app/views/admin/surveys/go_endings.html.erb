@@ -1,9 +1,9 @@
-<h1>happy end</h1>
+<h1>結局一覽</h1>
 <table class="table table-striped table-bordered">
   <thead>
     <tr>
       <th>角色名稱</th>
-      <th>薪資</th>
+      <th>薪資/成功個案數</th>
       <th>愛心房東</th>
       <th>首要任務</th>
       <th>次要任務</th>
@@ -18,8 +18,8 @@
           <td><%= endgrade.name %></td>
           <td><%= endgrade.asset %></td>
           <td><%= endgrade.is_kindhearted_landlord %></td>
-          <td><%= endgrade.mission_1[:m1_is_done] %></td>
-          <td><%= endgrade.mission_2[:m2_is_done] %></td>
+          <td><%= "#{endgrade.mission_1[:m1_intro]}" + " " + "#{endgrade.mission_1[:m1_is_done]}" %></td>
+          <td><%= "#{endgrade.mission_2[:m2_intro]}" + " " + "#{endgrade.mission_2[:m2_is_done]}" %></td>
           <%# <td> %>
             <%#= link_to 'Show', admin_endgrade_path(endgrade) %>
             <%#= link_to 'Edit', edit_admin_endgrade_path(endgrade) %>

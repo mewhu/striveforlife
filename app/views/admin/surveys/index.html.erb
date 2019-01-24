@@ -52,7 +52,6 @@
       <br>
 
       <%= form_for [:admin, @survey], :url => update_number_of_player_admin_survey_path(@survey.id)  do |f| %>
-      <%#= form_for [:admin, @survey] do |f| %>
         人數選擇： 
         <%= f.select :number_of_players, options_for_select([['8人', 8], ['9人', 9], ['10人', 10], ['11人', 11]], f.object.number_of_players), {}, {class: "form-control"} %>
         <%= f.submit "GoGoGo" %>
