@@ -15,6 +15,7 @@ Rails.application.routes.draw do
         patch :update_endgrades
         patch :update_endings
         get :go_endings
+        get :show_endings
       end
     end
   end

@@ -8,6 +8,7 @@
 
 
 # Default admin
+User.destroy_all
 User.create(email: "admin@homelesstaiwan.org", password: "adminadmin", role: "admin")
 puts "Default admin created!"
 
@@ -43,7 +44,7 @@ job_list = [
   { job: "homeless" },
   { job: "homeless" },
   { job: "social_worker" },
-  { job: "social_worder" },
+  { job: "social_worker" },
 ]
 
 ending_list = [

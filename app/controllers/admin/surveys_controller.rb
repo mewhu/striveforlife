@@ -3,7 +3,8 @@ class Admin::SurveysController < Admin::BaseController
                                           :edit_endgrades,
                                           :update_endgrades,
                                           :update_endings,
-                                          :go_endings]
+                                          :go_endings,
+                                          :show_endings]
   def index
     @survey = Survey.first
   end
@@ -23,13 +24,19 @@ class Admin::SurveysController < Admin::BaseController
   end
 
   def edit_endgrades
+    @homelesses = Endgrade.where(job: "homeless")
+    @social_workers = Endgrade.where(job: "social_worker")
   end
 
   def update_endgrades
-    puts  "------ follwoing is debug zone ------"
-    Rails.logger.debug  survey_params
-    puts  "------ above is debug zone ------"
+
     if @survey.update_attributes(survey_params)
+      # 暫時想不到如何把小家的成功個案直接連動到阿孝的成功個案, 先醜寫一次
+      @ashaw = Endgrade.where(name:  "阿孝").first
+      @tiachia = Endgrade.where(name:  "小家").first
+      @tiachia.asset = @ashaw.asset
+      @tiachia.save!
+      
       Rails.logger.debug("更新結算成績及個人租屋狀態  成功!")
       update_endings
     else
@@ -52,7 +59,7 @@ class Admin::SurveysController < Admin::BaseController
     end
     redirect_to go_endings_admin_survey_path
     # 從survey出發的endgrade沒有如預期被更改, 因此我預期以 @survey.update_attribute(survey_params)這個方式並不會更新ending
-    # ps: survey_params只有在一開始的"更新人數"及後續"填完endgrade表單"，也就是，它是從使用者端送進server時的封包裡得到的。
+    # ps: survey_params只有在一開始的"更新人數"及後續"填完endgrade表單"，也就是，它是從使用者端送進server時的封包裡得到使用者於view中調整的數值。
     # Rails.logger.debug  @survey.endgrades.first.ending_number
 
     # 從all_endgrades出發的endgrade有如預期被calculate_endings()更改
@@ -63,18 +70,18 @@ class Admin::SurveysController < Admin::BaseController
     @endgrades = Endgrade.all
   end
 
+  def show_endings
+    @endgrades = Endgrade.all
+  end
+
   private
   def survey_params
     params.require(:survey).permit(:number_of_players,
                                    endgrades_attributes: [:id, 
                                                           :asset, 
-                                                          :is_drunk, 
                                                           :is_kindhearted_landlord, 
-                                                          :mission_1, 
-                                                          :mission_2,
                                                           :m1_is_done,
-                                                          :m2_is_done,
-                                                          :is_mission_3])
+                                                          :m2_is_done])
   end
 
   def target_survey
@@ -195,18 +202,15 @@ class Admin::SurveysController < Admin::BaseController
           endgrade.ending_number = 22
         end
       end
-    when  "阿孝"
+    when  "阿孝", "小家"
+      Rails.logger.debug  endgrade.name
+      Rails.logger.debug  endgrade.asset
       if endgrade.asset >= ((Survey.first.number_of_players - 2)*0.5).round
         endgrade.ending_number = 21
       else
         endgrade.ending_number = 23
       end
-    when  "小家"
-      if endgrade.asset >= ((Survey.first.number_of_players - 2)*0.5).round
-        endgrade.ending_number = 21
-      else
-        endgrade.ending_number = 23
-      end
+      Rails.logger.debug  endgrade.ending_number
     end
   end
 

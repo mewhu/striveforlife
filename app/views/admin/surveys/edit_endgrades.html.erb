@@ -6,45 +6,46 @@
         <%# <div class="hide_element" id="players_11"> %>
         <div class="" id="endgrades_table">
           <%= f.fields_for :endgrades do |g| %>
-            <% Rails.logger.debug f%>
-            <% Rails.logger.debug f.class%>
-            <% Rails.logger.debug g%>
-            <% Rails.logger.debug g.class%>
             <% if g.object.players_mode.include?(f.object.number_of_players) %>
-              <%= g.label :name, g.object.name, class: "col-md-2" %>
-              <div class="col-md-10">
-                <div class="col-md-3">
-                  <% if g.object.job == "homeless" %>
-                    <div class="col-md-5">
-                      <%= g.label "薪水" %>
+              <% if g.object.job == "homeless" %>
+                <%= g.label :name, g.object.name, class: "col-md-2" %>
+                <div class="col-md-10">
+                  <div class="col-md-2">
+                    <%= g.label "薪水" %>
+                  </div>
+                  <div class="col-md-2">
+                    <%= g.text_field :asset, placeholder: "薪水", class: "form-control", :value => (g.object.asset || 0) %>
+                  </div>
+                  <div class="col-md-2">
+                    <%= g.select :is_kindhearted_landlord, options_for_select([["有愛心房東", true], ["無愛心房東", false]], g.object.is_kindhearted_landlord), {}, {class: "form-control"} %>
+                  </div>
+                  <%# 要在model中用 "store" + "accessors" 將hash key "m1_on_off"變成類似於"object的method"形式，才能在此view中被呼叫 %>
+                  <% if g.object.m1_on_off == "on" %>
+                  <%# 若像以下直觀的作法, 直接用hash key去存取 : 結果不work... %>
+                  <%# if g.mission_1[:m1_on_off] == "on" %>
+                    <div class="col-md-3">
+                      <%= g.select :m1_is_done, options_for_select([["有達成 " + g.object.m1_intro, true], ["無達成 " + g.object.m1_intro, false]], g.object.m1_is_done), {}, {class: "form-control"} %>
                     </div>
-                    <div class="col-md-5">
-                      <%= g.text_field :asset, placeholder: "薪水", class: "form-control", :value => (g.object.asset || 0) %>
-                    </div>
-                  <% else %>
-                    <div class="col-md-5">
-                      <%= g.label "成功個案" %>
-                    </div>
-                    <div class="col-md-5">
-                      <%= g.text_field :asset, placeholder: "成功個案", class: "form-control", :value => (g.object.asset || 0) %>
+                  <% end %>
+                  <% if g.object.m2_on_off == "on" %>
+                    <div class="col-md-3">
+                      <%= g.select :m2_is_done, options_for_select([["有達成 " + g.object.m2_intro, true], ["無達成 " + g.object.m2_intro, false]], g.object.m2_is_done), {}, {class: "form-control"} %>
                     </div>
                   <% end %>
                 </div>
-                <div class="col-md-3">
-                  <%= g.select :is_kindhearted_landlord, options_for_select([["有愛心房東", true], ["無愛心房東", false]], g.object.is_kindhearted_landlord), {}, {class: "form-control"} %>
-                </div>
-                <% if g.object.m1_on_off == "on" %>
-                <%# if g.mission_1[:m1_on_off] == "on" %>
-                  <div class="col-md-3">
-                    <%= g.select :m1_is_done, options_for_select([["有達成 " + g.object.m1_intro, true], ["無達成 " + g.object.m1_intro, false]], g.object.m1_is_done), {}, {class: "form-control"} %>
+              <% elsif g.object.job == "social_worker" %>
+                <% if g.object.name == "阿孝" %>
+                  <%= g.label "社工", class: "col-md-2" %>
+                  <div class="col-md-10">
+                    <div class="col-md-2">
+                      <%= g.label "成功個案" %>
+                    </div>
+                    <div class="col-md-2">
+                      <%= g.text_field :asset, placeholder: "成功個案", class: "form-control", :value => (g.object.asset || 0) %>
+                    </div>
                   </div>
                 <% end %>
-                <% if g.object.m2_on_off == "on" %>
-                  <div class="col-md-3">
-                    <%= g.select :m2_is_done, options_for_select([["有達成 " + g.object.m2_intro, true], ["無達成 " + g.object.m2_intro, false]], g.object.m2_is_done), {}, {class: "form-control"} %>
-                  </div>
-                <% end %>
-              </div>
+              <% end %>
             <% end %>
           <% end %>
         </div>
