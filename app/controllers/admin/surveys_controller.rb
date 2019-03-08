@@ -93,12 +93,12 @@ class Admin::SurveysController < Admin::BaseController
     when  "阿和"
       Rails.logger.debug("in 阿和")
       if endgrade.self_house_state
-        if endgrade.mission_1[:m1_is_done]
-          Rails.logger.debug("ending is 1")
-          endgrade.ending_number = 1
-        else
+        if endgrade.mission_1[:m1_is_done] == "true"
           Rails.logger.debug("ending is 2")
           endgrade.ending_number = 2
+        else
+          Rails.logger.debug("ending is 1")
+          endgrade.ending_number = 1
         end
       else
         Rails.logger.debug("ending is 22")
